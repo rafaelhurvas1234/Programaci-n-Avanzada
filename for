@@ -6,4 +6,4 @@ total_ventas = 0
 for venta in ventas:
     total_ventas += venta
 
-print(f"💰 Total de ventas del día: ${total_ventas}")
+print(f" Total de ventas del día: ${total_ventas}")
