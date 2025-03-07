@@ -1,0 +1,14 @@
+# Inicialización de variables
+total_ventas = 0
+
+# Ciclo while para tomar pedidos
+while True:
+    pedido = int(input(" Ingresa el monto del pedido (o escribe 0 para finalizar): "))
+    
+    if pedido == 0:  # Condición para salir del ciclo
+        break  
+    
+    total_ventas += pedido
+    print(f" Pedido registrado. Total acumulado: ${total_ventas}")
+
+print(f"\n Total de ventas del día: ${total_ventas}")
