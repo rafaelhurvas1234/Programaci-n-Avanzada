@@ -1,0 +1,51 @@
+import serial
+import csv
+import time
+from datetime import datetime
+
+# Configura tu puerto serial (ajústalo a tu caso: 'COM3' en Windows o '/dev/ttyUSB0' en Linux)
+SERIAL_PORT = 'COM3'
+BAUD_RATE = 9600
+CSV_FILE = 'luminosidad.csv'
+
+def parse_ldr(line):
+    try:
+        if line.startswith('L:'):
+            valor = int(line.strip().split(':')[1])
+            return valor
+        else:
+            return None
+    except Exception as e:
+        print(f"[ERROR] Línea inválida: {line} ({e})")
+        return None
+
+def main():
+    try:
+        ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=2)
+        time.sleep(2)
+        print("Conectado al puerto serial.")
+
+        # Crear archivo CSV con encabezado
+        with open(CSV_FILE, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['timestamp', 'luminosidad'])
+
+        while True:
+            line = ser.readline().decode('utf-8').strip()
+            ldr_val = parse_ldr(line)
+
+            if ldr_val is not None:
+                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                print(f"{timestamp} | Luminosidad: {ldr_val}")
+
+                with open(CSV_FILE, 'a', newline='') as f:
+                    writer = csv.writer(f)
+                    writer.writerow([timestamp, ldr_val])
+
+    except serial.SerialException as e:
+        print(f"[ERROR SERIAL] {e}")
+    except KeyboardInterrupt:
+        print("Finalizando lectura...")
+
+if __name__ == '__main__':
+    main()
