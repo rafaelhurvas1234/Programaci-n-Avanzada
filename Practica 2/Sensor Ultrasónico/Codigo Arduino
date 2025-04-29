@@ -1,0 +1,14 @@
+#define LDR_PIN A0  // Pin analógico conectado al LDR
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int ldrValor = analogRead(LDR_PIN);  // Valor entre 0 (oscuro) y 1023 (muy brillante)
+
+  Serial.print("Luminosidad: ");
+  Serial.println(ldrValor);
+
+  delay(1000);  // Esperar 1 segundo entre lecturas
+}
